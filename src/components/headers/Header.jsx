@@ -16,6 +16,16 @@ const Header = () => {
     const [showSearch, setShowSearch] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
+
+    const openSearch = () => {
+      setMobileMenu(false);
+      setShowSearch(true);
+    }
+
+    const openMobileMenue = () => {
+      setMobileMenu(true);
+      setShowSearch(false);
+    }
   return (
     <header className="header"> 
       <ContentWrapper>
