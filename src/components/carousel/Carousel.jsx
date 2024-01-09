@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   BsFillArrowLeftCircleFill,
   BsFillArrowRightCircleFill,
@@ -12,6 +12,8 @@ import Img from "../lazyLoadImage/Img";
 import PosterFallback from "../../assets/no-poster.png";
 import CircleRating from "../circleRating/CircleRating";
 import Genres from "../genres/Genres";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
+const { getItem, setItem } = useLocalStorage("favs");
 
 import "./style.scss";
 
@@ -19,6 +21,8 @@ const Carousel = ({ data, loading, endpoint, title }) => {
   const carouselContainer = useRef();
   const { url } = useSelector((state) => state.home);
   const navigate = useNavigate();
+  const [favs, setFavs] = useState([]);
+
 
   const navigation = (dir) => {
     const container = carouselContainer.current;
@@ -34,6 +38,13 @@ const Carousel = ({ data, loading, endpoint, title }) => {
     });
   };
 
+  useEffect(() => {
+    const storedFavs = getItem();
+   
+    if (storedFavs) {
+      setFavs(storedFavs);
+    }
+  }, [favs]);
   const skItem = () => {
     return (
       <div className="skeletonItem">
@@ -46,6 +57,23 @@ const Carousel = ({ data, loading, endpoint, title }) => {
     );
   };
   // console.log(data);
+
+  const addToFavs = (movie) => {
+    //console.log("In addToFavs");
+    let newFavs = [...favs, movie];
+    setFavs([...newFavs]);
+    setItem(newFavs);
+    //console.log(newFavs);
+  };
+
+  const removeFromFavs = (movie) => {
+    //console.log("in removeFromFavs");
+    let newFavs = favs.filter((m) => m.id !== movie.id);
+    setFavs([...newFavs]);
+    setItem(newFavs);
+    //console.log(newFavs);
+  };
+
   return (
     <div className="carousel">
       <ContentWrapper>
@@ -75,6 +103,30 @@ const Carousel = ({ data, loading, endpoint, title }) => {
                   <div className="posterBlock">
                     <Img src={posterUrl} />
                     <CircleRating rating={item.vote_average.toFixed(1)} />
+                    <>
+                      {favs.find((m) => m.id == item.id) ? (
+                        <div
+                          className="favEmoji"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            removeFromFavs(item);
+                          }}
+                        >
+                          ❌
+                        </div>
+                      ) : (
+                        <div
+                          className="favEmoji"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            addToFavs(item);
+                          }}
+                        >
+                          ❤️
+                        </div>
+                      )}
+                      ;
+                    </>
                     <Genres data={item.genre_ids.slice(0, 2)} />
                   </div>
                   <div className="textBlock">
