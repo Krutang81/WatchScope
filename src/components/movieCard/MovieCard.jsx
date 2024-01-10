@@ -13,7 +13,7 @@ const { getItem, setItem } = useLocalStorage("favs");
 const MovieCard = ({ data, fromSearch, mediaType }) => {
   const [favs, setFavs] = useState([]);
   const { url } = useSelector((state) => state.home);
-  
+
   useEffect(() => {
     const storedFavs = getItem();
 
@@ -49,33 +49,34 @@ const MovieCard = ({ data, fromSearch, mediaType }) => {
     >
       <div className="posterBlock">
         <Img className="posterImg" src={posterUrl} />
+        <>
+          {favs.find((m) => m.id == data.id) ? (
+            <div
+              className="favEmoji"
+              onClick={(e) => {
+                e.stopPropagation();
+                removeFromFavs(data);
+              }}
+            >
+              ❌
+            </div>
+          ) : (
+            <div
+              className="favEmoji"
+              onClick={(e) => {
+                e.stopPropagation();
+                addToFavs(data);
+              }}
+            >
+              ❤️
+            </div>
+          )}
+          ;
+        </>
         {!fromSearch && (
           <React.Fragment>
             <CircleRating rating={data.vote_average.toFixed(1)} />
-            <>
-              {favs.find((m) => m.id == data.id) ? (
-                <div
-                  className="favEmoji"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    removeFromFavs(data);
-                  }}
-                >
-                  ❌
-                </div>
-              ) : (
-                <div
-                  className="favEmoji"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    addToFavs(data);
-                  }}
-                >
-                  ❤️
-                </div>
-              )}
-              ;
-            </>
+
             <Genres data={data.genre_ids.slice(0, 2)} />
           </React.Fragment>
         )}

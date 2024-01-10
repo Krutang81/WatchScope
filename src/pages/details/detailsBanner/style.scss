@@ -44,7 +44,7 @@
     .content {
         display: flex;
         position: relative;
-        flex-direction: column;
+        flex-direction: row;
         gap: 25px;
         @include md {
             gap: 50px;

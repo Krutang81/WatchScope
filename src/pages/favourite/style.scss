@@ -3,7 +3,7 @@
   min-height: 700px;
   padding-top: 100px;
 }
-.pageHeader {
+.pageheader {
   display: flex;
   justify-content: space-between;
   margin-bottom: 25px;
@@ -12,7 +12,7 @@
     flex-direction: row;
   }
 }
-.pageTitle {
+.pagetitle {
   font-size: 24px;
   line-height: 34px;
   color: white;
@@ -22,7 +22,7 @@
   }
 }
 
-.searchInput {
+.searchinput {
   display: flex;
   align-items: center;
   width: 100%;
@@ -61,7 +61,7 @@
   }
 }
 
-.content {
+.contents {
   display: flex;
   flex-flow: row wrap;
   gap: 10px;
@@ -69,9 +69,5 @@
   @include md {
     gap: 20px;
   }
-  .movieCard {
-    .posterBlock {
-      margin-bottom: 30px;
-    }
-  }
+ 
 }

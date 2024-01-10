@@ -32,13 +32,16 @@ function Favourite() {
   };
   // console.log(favs);
 
+  const filteredFavs = favs.filter(
+    (fav) => fav.title && fav.title.toLowerCase().includes(search.toLowerCase())
+  );
   return (
-    <div className="favPage">
-      <ContentWrapper>
-        <div className="pageHeader">
-          <div className="pageTitle">{"Favourites"}</div>
+    <ContentWrapper>
+      <div className="favPage">
+        <div className="pageheader">
+          <div className="pagetitle">{"Favourites"}</div>
         </div>
-        <div className="searchInput">
+        <div className="searchinput">
           <input
             type="text"
             placeholder="Search for your favourite movies or TV shows..."
@@ -48,13 +51,17 @@ function Favourite() {
           />
           <button onClick={searchClickHandler}>Search</button>
         </div>
-        <div className="content">
-          {favs.map((fav) => (
-            <MovieCard key={fav.id} data={fav} mediaType={'movie'} />
-          ))}
+        <div className="contents">
+          {search
+            ? filteredFavs.map((fav) => (
+                <MovieCard key={fav.id} data={fav} mediaType={"movie"} />
+              ))
+            : favs.map((fav) => (
+                <MovieCard key={fav.id} data={fav} mediaType={"movie"} />
+              ))}
         </div>
-      </ContentWrapper>
-    </div>
+      </div>
+    </ContentWrapper>
   );
 }
 
